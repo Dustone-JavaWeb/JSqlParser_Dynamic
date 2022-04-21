@@ -21,3 +21,20 @@
 /nbproject/
 
 /.gradle
+/src/main/jjtree/net/sf/jsqlparser/parser/CCJSqlParserTokenManager.java
+/src/main/jjtree/net/sf/jsqlparser/parser/SimpleCharStream.java
+/src/main/jjtree/net/sf/jsqlparser/parser/CCJSqlParser.java
+/src/main/jjtree/net/sf/jsqlparser/parser/CCJSqlParserConstants.java
+/src/main/jjtree/net/sf/jsqlparser/parser/CCJSqlParserDefaultVisitor.java
+/src/main/jjtree/net/sf/jsqlparser/parser/CCJSqlParserTreeConstants.java
+/src/main/jjtree/net/sf/jsqlparser/parser/CCJSqlParserVisitor.java
+/src/main/jjtree/net/sf/jsqlparser/parser/JJTCCJSqlParserState.java
+/src/main/jjtree/net/sf/jsqlparser/parser/JSqlParserCC.jj
+/src/main/jjtree/net/sf/jsqlparser/parser/Node.java
+/src/main/jjtree/net/sf/jsqlparser/parser/ParseException.java
+/src/main/jjtree/net/sf/jsqlparser/parser/Provider.java
+/src/main/jjtree/net/sf/jsqlparser/parser/SimpleNode.java
+/src/main/jjtree/net/sf/jsqlparser/parser/StreamProvider.java
+/src/main/jjtree/net/sf/jsqlparser/parser/StringProvider.java
+/src/main/jjtree/net/sf/jsqlparser/parser/Token.java
+/src/main/jjtree/net/sf/jsqlparser/parser/TokenMgrException.java

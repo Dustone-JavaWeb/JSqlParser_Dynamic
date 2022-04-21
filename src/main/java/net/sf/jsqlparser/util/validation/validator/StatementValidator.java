@@ -58,6 +58,7 @@ import net.sf.jsqlparser.statement.upsert.Upsert;
 import net.sf.jsqlparser.statement.values.ValuesStatement;
 import net.sf.jsqlparser.util.validation.ValidationCapability;
 import net.sf.jsqlparser.util.validation.metadata.NamedObject;
+import top.dustone.itworks.xsql.statement.XSelectStatement;
 
 /**
  * @author gitmotte
@@ -302,5 +303,10 @@ public class StatementValidator extends AbstractValidator<Statement> implements 
     @Override
     public void visit(AlterSystemStatement alterSystemStatement) {
         //TODO: not yet implemented
+    }
+
+    @Override
+    public void visit(XSelectStatement xSelectStatement) {
+
     }
 }

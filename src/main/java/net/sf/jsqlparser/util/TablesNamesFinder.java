@@ -66,6 +66,7 @@ import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 import net.sf.jsqlparser.statement.upsert.Upsert;
 import net.sf.jsqlparser.statement.values.ValuesStatement;
+import top.dustone.itworks.xsql.statement.XSelectStatement;
 
 /**
  * Find all used tables within an select statement.
@@ -1030,6 +1031,11 @@ public class TablesNamesFinder implements SelectVisitor, FromItemVisitor, Expres
     @Override
     public void visit(AlterSystemStatement alterSystemStatement) {
         // no tables involved in this statement
+    }
+
+    @Override
+    public void visit(XSelectStatement xSelectStatement) {
+
     }
 
     @Override

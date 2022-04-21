@@ -8,7 +8,7 @@
     <organization>
         <name>JSQLParser</name> 
     </organization>
-    <packaging>bundle</packaging>
+    <packaging>pom</packaging>
     <url>https://github.com/JSQLParser/JSqlParser</url>
 
     <licenses>
@@ -60,6 +60,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.10</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>4.2.6</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

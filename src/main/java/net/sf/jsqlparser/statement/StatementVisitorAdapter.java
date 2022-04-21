@@ -35,6 +35,7 @@ import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 import net.sf.jsqlparser.statement.upsert.Upsert;
 import net.sf.jsqlparser.statement.values.ValuesStatement;
+import top.dustone.itworks.xsql.statement.XSelectStatement;
 
 @SuppressWarnings({"PMD.UncommentedEmptyMethodBody"})
 public class StatementVisitorAdapter implements StatementVisitor {
@@ -233,5 +234,10 @@ public class StatementVisitorAdapter implements StatementVisitor {
 
     @Override
     public void visit(AlterSystemStatement alterSystemStatement) {
+    }
+
+    @Override
+    public void visit(XSelectStatement xSelectStatement) {
+
     }
 }

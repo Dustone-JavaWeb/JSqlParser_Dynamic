@@ -61,6 +61,9 @@ import net.sf.jsqlparser.statement.upsert.*;
 import net.sf.jsqlparser.statement.merge.*;
 import net.sf.jsqlparser.statement.values.*;
 import net.sf.jsqlparser.statement.grant.*;
+
+import top.dustone.itworks.xsql.statement.*;
+
 import java.util.*;
 
 /**
@@ -435,6 +438,12 @@ TOKEN: /* SQL Keywords. prefixed with K_ to avoid name clashes */
 |   <K_ZONE:"ZONE">
 }
 
+/*XSelectStatement*/
+TOKEN :{
+    <X_SELECT:("-- XSELECT ID=")>
+|   <X_END:(["\r","\n"])>
+}
+
 TOKEN : /* Stuff */
 {
     <ST_SEMICOLON : ";" >
@@ -470,7 +479,7 @@ TOKEN : /* Numeric Constants */
 
 SPECIAL_TOKEN:
 {
-   < LINE_COMMENT: ("--" | "//") (~["\r","\n"])*>
+   < LINE_COMMENT: ( "//") (~["\r","\n"])*>
 |  < MULTI_LINE_COMMENT: "/*" (~["*"])* "*" ("*" | (~["*","/"] (~["*"])* "*"))* "/">
 }
 
@@ -628,6 +637,8 @@ Statement SingleStatement() :
         |
         stm = Explain()
         |
+        stm = XSelectStatement()
+        |
         stm = Declare()
         |
         stm = Grant()
@@ -644,6 +655,25 @@ Statement SingleStatement() :
             return null;
         } else
             throw e;
+    }
+}
+
+XSelectStatement XSelectStatement() #XSelectStatement:{
+    Statement stmt = null;
+    String id = null;
+    Token idToken = null;
+    XSelectStatement xSelect = new XSelectStatement();
+}
+{
+    <X_SELECT>
+    idToken = <S_CHAR_LITERAL>
+
+    stmt =  SingleStatement( )
+    <EOF>
+    {
+       xSelect.setId(idToken.image);
+       xSelect.setSelect((Select)stmt);
+       return xSelect;
     }
 }
 

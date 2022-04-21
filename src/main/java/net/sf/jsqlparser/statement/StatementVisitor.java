@@ -35,6 +35,7 @@ import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 import net.sf.jsqlparser.statement.upsert.Upsert;
 import net.sf.jsqlparser.statement.values.ValuesStatement;
+import top.dustone.itworks.xsql.statement.XSelectStatement;
 
 public interface StatementVisitor {
     
@@ -120,4 +121,6 @@ public interface StatementVisitor {
     void visit(PurgeStatement purgeStatement);
 
     void visit(AlterSystemStatement alterSystemStatement);
+
+    void visit(XSelectStatement xSelectStatement);
 }

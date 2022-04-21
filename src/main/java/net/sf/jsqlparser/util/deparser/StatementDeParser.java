@@ -9,27 +9,7 @@
  */
 package net.sf.jsqlparser.util.deparser;
 
-import java.util.Iterator;
-import java.util.stream.Collectors;
-
-import net.sf.jsqlparser.statement.Block;
-import net.sf.jsqlparser.statement.Commit;
-import net.sf.jsqlparser.statement.CreateFunctionalStatement;
-import net.sf.jsqlparser.statement.DeclareStatement;
-import net.sf.jsqlparser.statement.DescribeStatement;
-import net.sf.jsqlparser.statement.ExplainStatement;
-import net.sf.jsqlparser.statement.IfElseStatement;
-import net.sf.jsqlparser.statement.PurgeStatement;
-import net.sf.jsqlparser.statement.RollbackStatement;
-import net.sf.jsqlparser.statement.SavepointStatement;
-import net.sf.jsqlparser.statement.ResetStatement;
-import net.sf.jsqlparser.statement.SetStatement;
-import net.sf.jsqlparser.statement.ShowColumnsStatement;
-import net.sf.jsqlparser.statement.ShowStatement;
-import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.StatementVisitor;
-import net.sf.jsqlparser.statement.Statements;
-import net.sf.jsqlparser.statement.UseStatement;
+import net.sf.jsqlparser.statement.*;
 import net.sf.jsqlparser.statement.alter.Alter;
 import net.sf.jsqlparser.statement.alter.AlterSession;
 import net.sf.jsqlparser.statement.alter.AlterSystemStatement;
@@ -57,6 +37,10 @@ import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 import net.sf.jsqlparser.statement.upsert.Upsert;
 import net.sf.jsqlparser.statement.values.ValuesStatement;
+import top.dustone.itworks.xsql.statement.XSelectStatement;
+
+import java.util.Iterator;
+import java.util.stream.Collectors;
 
 public class StatementDeParser extends AbstractDeParser<Statement> implements StatementVisitor {
 
@@ -69,7 +53,7 @@ public class StatementDeParser extends AbstractDeParser<Statement> implements St
     }
 
     public StatementDeParser(ExpressionDeParser expressionDeParser, SelectDeParser selectDeParser,
-            StringBuilder buffer) {
+                             StringBuilder buffer) {
         super(buffer);
         this.expressionDeParser = expressionDeParser;
         this.selectDeParser = selectDeParser;
@@ -143,7 +127,7 @@ public class StatementDeParser extends AbstractDeParser<Statement> implements St
         selectDeParser.setExpressionVisitor(expressionDeParser);
         if (select.getWithItemsList() != null && !select.getWithItemsList().isEmpty()) {
             buffer.append("WITH ");
-            for (Iterator<WithItem> iter = select.getWithItemsList().iterator(); iter.hasNext();) {
+            for (Iterator<WithItem> iter = select.getWithItemsList().iterator(); iter.hasNext(); ) {
                 WithItem withItem = iter.next();
                 withItem.accept(selectDeParser);
                 if (iter.hasNext()) {
@@ -226,12 +210,12 @@ public class StatementDeParser extends AbstractDeParser<Statement> implements St
     public void visit(SavepointStatement savepointStatement) {
         buffer.append(savepointStatement.toString());
     }
-    
+
     @Override
     public void visit(RollbackStatement rollbackStatement) {
         buffer.append(rollbackStatement.toString());
     }
-    
+
     @Override
     public void visit(Commit commit) {
         buffer.append(commit.toString());
@@ -356,9 +340,9 @@ public class StatementDeParser extends AbstractDeParser<Statement> implements St
 
     @Override
     public void visit(IfElseStatement ifElseStatement) {
-       ifElseStatement.appendTo(buffer);
+        ifElseStatement.appendTo(buffer);
     }
-    
+
     @Override
     public void visit(RenameTableStatement renameTableStatement) {
         renameTableStatement.appendTo(buffer);
@@ -372,5 +356,11 @@ public class StatementDeParser extends AbstractDeParser<Statement> implements St
     @Override
     public void visit(AlterSystemStatement alterSystemStatement) {
         alterSystemStatement.appendTo(buffer);
+    }
+
+    @Override
+    public void visit(XSelectStatement xSelectStatement) {
+        Select select = xSelectStatement.getSelect();
+        visit(select);
     }
 }
