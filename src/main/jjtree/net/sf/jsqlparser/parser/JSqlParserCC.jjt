@@ -63,6 +63,7 @@ import net.sf.jsqlparser.statement.values.*;
 import net.sf.jsqlparser.statement.grant.*;
 
 import top.dustone.itworks.xsql.statement.*;
+import top.dustone.itworks.xsql.expression.*;
 
 import java.util.*;
 
@@ -441,6 +442,10 @@ TOKEN: /* SQL Keywords. prefixed with K_ to avoid name clashes */
 /*XSelectStatement*/
 TOKEN :{
     <X_SELECT:("-- XSELECT ID=")>
+|   <X_IF:("-- XIF")>
+|   <X_ELSE:("-- XELSE")>
+|   <X_ELSEIF:("-- XELSEOF")>
+|   <X_FOR:("-- XFOR")>
 //|   <X_LINE:(~["\r","\n"])*>
 //|   <X_END:"-- END">
 }
@@ -480,7 +485,7 @@ TOKEN : /* Numeric Constants */
 
 SPECIAL_TOKEN:
 {
-   < LINE_COMMENT: ( "//") (~["\r","\n"])*>
+   < LINE_COMMENT: ("//") (~["\r","\n"])*>
 |  < MULTI_LINE_COMMENT: "/*" (~["*"])* "*" ("*" | (~["*","/"] (~["*"])* "*"))* "/">
 }
 
@@ -676,6 +681,17 @@ XSelectStatement XSelect() #XSelect:{
        return xSelect;
     }
 }
+
+XIf XIf(Expression exp) #XIf:{
+    Expression e;
+}
+{
+{System.out.println(exp);}
+    {
+    return new XIf();
+    }
+}
+
 
 Block Block() #Block : {
     Statements stmts = new Statements();
@@ -3073,7 +3089,7 @@ Expression AndExpression() :
 
     ( LOOKAHEAD(2)
         { boolean useOperator = false; }
-         (<K_AND> | <K_AND_OPERATOR> {useOperator=true;} )
+         ( <K_AND> | <K_AND_OPERATOR> {useOperator=true;} )
         (
         LOOKAHEAD(Condition())
             right=Condition()
@@ -3087,6 +3103,7 @@ Expression AndExpression() :
             left = result;
         }
     )*
+    XIf(result)
     {
         return result;
     }

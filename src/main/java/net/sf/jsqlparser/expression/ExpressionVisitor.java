@@ -18,6 +18,7 @@ import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.AllColumns;
 import net.sf.jsqlparser.statement.select.AllTableColumns;
 import net.sf.jsqlparser.statement.select.SubSelect;
+import top.dustone.itworks.xsql.expression.XIf;
 
 public interface ExpressionVisitor {
 
@@ -190,4 +191,8 @@ public interface ExpressionVisitor {
     void visit(IsDistinctExpression isDistinctExpression);
 
     void visit(GeometryDistance geometryDistance);
+
+    default void visit(XIf xIf){
+        xIf.accept(this);
+    }
 }
