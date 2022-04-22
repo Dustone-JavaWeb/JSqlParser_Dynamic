@@ -20,6 +20,7 @@ import net.sf.jsqlparser.util.deparser.ExpressionDeParser;
 import net.sf.jsqlparser.util.deparser.SelectDeParser;
 import net.sf.jsqlparser.util.deparser.StatementDeParser;
 import top.dustone.itworks.xsql.statement.XSelectStatement;
+import top.dustone.itworks.xsql.util.deparser.XSQLDeParser;
 
 /**
  * @Author Chenyan
@@ -28,50 +29,18 @@ import top.dustone.itworks.xsql.statement.XSelectStatement;
  * @Device Macbook Air 2020 M1
  **/
 public class DeparserDebug {
-    static class ReplaceColumnAndLongValues extends ExpressionDeParser {
-
-        @Override
-        public void visit(StringValue stringValue) {
-            this.getBuffer().append("?");
-        }
-
-        @Override
-        public void visit(LongValue longValue) {
-            this.getBuffer().append("?");
-        }
-    }
-
-    static class XStatementDeParser extends StatementDeParser{
-
-        public XStatementDeParser(ExpressionDeParser expressionDeParser, SelectDeParser selectDeParser, StringBuilder buffer) {
-            super(expressionDeParser, selectDeParser, buffer);
-        }
-
-        @Override
-        public void visit(XSelectStatement xSelectStatement) {
-            super.visit(xSelectStatement);
-            System.err.println(xSelectStatement.getId());
-            System.err.println(xSelectStatement.getSelect());
-        }
-    }
-    public static String cleanStatement(String sql) throws JSQLParserException {
-        StringBuilder buffer = new StringBuilder();
-        ExpressionDeParser expr = new ReplaceColumnAndLongValues();
-
-        SelectDeParser selectDeparser = new SelectDeParser(expr, buffer);
-        expr.setSelectVisitor(selectDeparser);
-        expr.setBuffer(buffer);
-        StatementDeParser stmtDeparser = new XStatementDeParser(expr, selectDeparser, buffer);
-
-        Statements stmt = (Statements) CCJSqlParserUtil.parse(sql);
-        stmt.getStatements().forEach(statement -> statement.accept(stmtDeparser));
-//        stmt.accept(stmtDeparser);
-        return stmtDeparser.getBuffer().toString();
-    }
 
     public static void main(String[] args) throws JSQLParserException {
         Vertx vertx = Vertx.vertx();
         String sql = vertx.fileSystem().readFileBlocking("data/test.sql").toString();
-        System.out.println(cleanStatement(sql));
+        StringBuilder builder = new StringBuilder();
+        Statements stmts = CCJSqlParserUtil.parseStatements(sql);
+        XSQLDeParser deParser = XSQLDeParser.build(builder);
+        stmts.getStatements().forEach(statement -> {
+            builder.setLength(0);
+            statement.accept(deParser);
+            System.out.println(deParser.getxSelectStatement().getId());
+            System.out.println(builder);
+        });
     }
 }

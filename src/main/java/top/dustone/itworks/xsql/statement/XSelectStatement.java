@@ -45,6 +45,6 @@ public class XSelectStatement implements Statement {
     }
 
     public void setId(String id) {
-        this.id = id.substring(1,id.length()-1);
+        this.id = id;
     }
 }
